@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">CryptocurrencyAppYT</string>
-    <string name="dark_theme">Dark theme</string>
-    <string name="team_members">Team members</string>
+    <string name="dark_theme">Chế độ tối</string>
+    <string name="team_members">Thành viên</string>
 </resources>

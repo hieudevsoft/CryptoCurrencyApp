@@ -6,8 +6,6 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.retryWhen
 import java.io.IOException
 
-
-
 fun<T> Flow<Resource<T>>.applyCommonSideEffect() = retryWhen { cause, attempt ->
     if(cause is IOException && attempt < Constants.MAX_ENTRIES){
         delay(Utils.getBackOffDelay(attempt.toInt()).toLong())

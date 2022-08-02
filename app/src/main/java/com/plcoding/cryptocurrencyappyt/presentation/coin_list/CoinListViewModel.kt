@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.plcoding.cryptocurrencyappyt.common.Resource
@@ -14,13 +15,19 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
-class CoinListViewModel(app: Application, private val getCoinsUseCase:GetCoinsUserCase):AndroidViewModel(app) {
+class CoinListViewModel @Inject constructor(app: Application, private val getCoinsUseCase:GetCoinsUserCase,savedStateHandle: SavedStateHandle):AndroidViewModel(app) {
+
     private val _stateCoinList = mutableStateOf(CoinListState())
     val state:State<CoinListState> = _stateCoinList
+
+    private val _stateSwitchIsChecked = mutableStateOf(true)
+    val stateSwitchIsChecked:State<Boolean> = _stateSwitchIsChecked
     init {
         getCoins()
+        savedStateHandle.get<Boolean>("isChecked")?.let { _stateSwitchIsChecked.value=it }
     }
 
     private fun getCoins() {
@@ -39,5 +46,9 @@ class CoinListViewModel(app: Application, private val getCoinsUseCase:GetCoinsUs
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    fun setStateSwitch(isChecked:Boolean) {
+        _stateSwitchIsChecked.value = isChecked
     }
 }
